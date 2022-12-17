@@ -24,13 +24,13 @@ function Car(params) {
     this.leftBack = {};
 
     mtlLoader.setPath('./assets/');
-    mtlLoader.load('car4.mtl', function (materials) {
+    mtlLoader.load('ph.mtl', function (materials) {
 
         materials.preload();
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
         objLoader.setPath('./assets/');
-        objLoader.load('car4.obj', function (object) {
+        objLoader.load('auto.obj', function (object) {
             car = object;
             car.children.forEach(function (item) {
                 item.castShadow = true;
@@ -192,17 +192,18 @@ Car.prototype.cancelBrake = function () {
 Car.prototype.physical = function () {
     var i = 0;
 
-    for (; i < outside.length; i += 4) {
-        if (isLineSegmentIntr(this.leftFront, this.leftBack, {
-            x: outside[i],
-            y: outside[i + 1]
-        }, {
-            x: outside[i + 2],
-            y: outside[i + 3]
-        })) {
-            return i;
-        }
-    }
+    // for (; i < outside.length; i += 4) {
+    //     if (isLineSegmentIntr(this.leftFront, this.leftBack, {
+    //         x: outside[i],
+    //         y: outside[i + 1]
+    //     }, {
+    //         x: outside[i + 2],
+    //         y: outside[i + 3]
+    //     })) {
+    //         return i;
+    //     }
+    // }
+
 
     return -1;
 };

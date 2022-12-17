@@ -309,8 +309,8 @@
                         var dis = pointToPlane(sphere.center,frustum.planes[j])
                         if(dis<-sphere.radius)
                             intersect = false
-                    
                 }
+                // 因为有可能items[i]是空的，所以要判断一下
                 if(items[i]){
                     //console.log(items[i])
                     items[i].visible = intersect
