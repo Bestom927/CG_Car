@@ -54,6 +54,7 @@ function Car(params) {
         mtl: 'front_wheel.mtl',
         obj: 'front_wheel.obj',
         parent: car,
+        scene: params.scene,
         offsetX: 2.79475,
         offsetZ: -3.28386
     });
@@ -62,12 +63,13 @@ function Car(params) {
         mtl: 'front_wheel.mtl',
         obj: 'front_wheel.obj',
         parent: car,
+        scene: params.scene,
         offsetX: -2.79475,
         offsetZ: -3.28386
     });
 }
 
-Car.prototype.tick = function() {
+Car.prototype.tick = function(params) {
     if(this.lock > 0) {
         this.lock--;
         if(this.lock % 2) {
@@ -170,9 +172,9 @@ this.light.shadow.camera.updateProjectionMatrix();*/
     this.frontRightWheel.wrapper.position.x += speedX;
 
     
-    camera.rotation.y = rotation;
-    camera.position.x = this.car.position.x + Math.sin(rotation) * 20;
-    camera.position.z = this.car.position.z + Math.cos(rotation) * 20;
+    params.camera.rotation.y = rotation;
+    params.camera.position.x = this.car.position.x + Math.sin(rotation) * 20;
+    params.camera.position.z = this.car.position.z + Math.cos(rotation) * 20;
 };
 
 Car.prototype.brake = function() {
@@ -253,7 +255,7 @@ function Wheel(params) {
 
             object.position.set(params.offsetX, 0, params.offsetZ);
 
-            scene.add(wrapper);
+            params.scene.add(wrapper);
             self.wheel = object;
             self.wrapper = wrapper;
 
