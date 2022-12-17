@@ -116,7 +116,7 @@
         // var material = new THREEE.MeshStandardMaterial({color:new THREEE.Color(0.4,0.4,0.4),side:2})
         var items=[];
         var spheres=[];
-        //使用three随机创建一千个物体并存到spheres数组中
+        //使用three随机创建一千个物体并存到spheres数组?
         for(var i=0;i<1000;i++){
             var geometry=geometrys[Math.floor(Math.random()*geometrys.length)]
             var instanceMesh = new THREEE.InstancedMesh(geometry,material,1000)
@@ -157,11 +157,13 @@
             )
             sphere.position.copy(boundingSphere.center)
 
-            spheres.push(mesh);
+            spheres.push(boundingSphere);
             scene.add(mesh);
-            scene.add(instanceMesh)
+            
         }
+        scene.add(instanceMesh)
 
+        
         
         // for(let g_index=0; g_index<geometrys.length; g_index++){
         //     let num=2
@@ -303,22 +305,30 @@
                 var sphere = spheres[i]
                 var intersect = true
                 for(let j=0; j<frustum.planes.length; j++){
-                    var dis = pointToPlane(sphere.center,frustum.planes[j])
-                    if(dis<-sphere.radius)
-                        intersect = false
+                    
+                        var dis = pointToPlane(sphere.center,frustum.planes[j])
+                        if(dis<-sphere.radius)
+                            intersect = false
+                    
                 }
-                items[i].visible = intersect
-                if(intersect) num++
+                if(items[i]){
+                    //console.log(items[i])
+                    items[i].visible = intersect
+                    if(intersect)
+                        num++
+                }
+                // items[i].visible = intersect
+                // if(intersect) num++
             }
             console.log(num)
         }
         function pointToPlane(point,plane){
-            console.log(plane.normal.x)
+            // console.log(plane.normal.x)
             var A = plane.normal.x
             var B = plane.normal.y
             var C = plane.normal.z
             var D = plane.constant
-            console.log(point.x)
+            // console.log(point.x)
             var dis = A*point.x+B*point.y+C*point.z+D
             return dis
         }

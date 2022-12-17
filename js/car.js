@@ -175,6 +175,7 @@ this.light.shadow.camera.updateProjectionMatrix();*/
     params.camera.rotation.y = rotation;
     params.camera.position.x = this.car.position.x + Math.sin(rotation) * 20;
     params.camera.position.z = this.car.position.z + Math.cos(rotation) * 20;
+    
 };
 
 Car.prototype.brake = function() {
