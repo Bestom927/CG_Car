@@ -3,6 +3,9 @@ function Car(params) {
     var car;
     var mtlLoader = new THREE.MTLLoader();
 
+    var app = params.app;
+    this.app = app;
+
     this.speed = 0;
     this.rSpeed = 0;
     this.run = false;
@@ -169,6 +172,11 @@ Car.prototype.tick = function (params) {
     var correctedSpeed;
     if (collisionSide > -1) {
         correctedSpeed = this.collision(speedX, speedZ, collisionSide);
+
+        // console.log(this.app)
+        // 假设此时停止计时
+        this.app.$data.endTimeStamp = new Date().getTime();
+        this.app.$data.visible = true;
 
         speedX = correctedSpeed.vx * 5;
         speedZ = correctedSpeed.vy * 5;
