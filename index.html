@@ -168,52 +168,56 @@
         var items = [];
         var spheres = [];
         //使用three随机创建一千个物体并存到spheres数组?
-        for (var i = 0; i < 1000; i++) {
-            var geometry = geometrys[Math.floor(Math.random() * geometrys.length)]
-            var instanceMesh = new THREEE.InstancedMesh(geometry, material, 1000)
-            var mesh = new THREEE.Mesh(geometry, material)
-            mesh.position.x = (Math.random() - 0.5) * 1000;
-            mesh.position.y = (Math.random() - 0.5) * 1000;
-            mesh.position.z = (Math.random() - 0.5) * 1000;
-            mesh.rotation.x = Math.random() * Math.PI;
-            mesh.rotation.y = Math.random() * Math.PI;
-            mesh.rotation.z = Math.random() * Math.PI;
-            mesh.scale.x = Math.random() + 0.5;
-            mesh.scale.y = Math.random() + 0.5;
-            mesh.scale.z = Math.random() + 0.5;
+        for(let g_index=0; g_index<geometrys.length; g_index++){
+            let num=1000
+            var geometry=geometrys[g_index]
+            
+            for (var i = 0; i < num; i++) {
+                
+                var instanceMesh = new THREEE.InstancedMesh(geometry, material, num)
+                var mesh = new THREEE.Mesh(geometry, material)
+                mesh.position.x = (Math.random() - 0.5) * 10000;
+                mesh.position.y = (Math.random() - 0.5) * 10000;
+                mesh.position.z = (Math.random() - 0.5) * 10000;
+                mesh.rotation.x = Math.random() * Math.PI;
+                mesh.rotation.y = Math.random() * Math.PI;
+                mesh.rotation.z = Math.random() * Math.PI;
+                mesh.scale.x = Math.random() + 0.5;
+                mesh.scale.y = Math.random() + 0.5;
+                mesh.scale.z = Math.random() + 0.5;
 
-            mesh.geometry.computeBoundingSphere()
-            var boundingSphere = mesh.geometry.boundingSphere.clone()
-            spheres.push(boundingSphere)
-            let r = 500
-            let fai = 1 * 3.14 * Math.random()
-            let lamda = 2 * 3.14 * Math.random()
-            var matrix = new THREEE.Matrix4().set(
-                2 * Math.random() - 1, 2 * Math.random() - 1, 2 * Math.random() - 1, r * Math.cos(lamda) * Math.sin(fai),
-                2 * Math.random() - 1, 2 * Math.random() - 1, 2 * Math.random() - 1, r * Math.sin(lamda) * Math.sin(fai),
-                2 * Math.random() - 1, 2 * Math.random() - 1, 2 * Math.random() - 1, r * Math.cos(fai),
-                0, 0, 0, 1
-            )
-            instanceMesh.setMatrixAt(i, matrix)
-            instanceMesh.setColorAt(i, new THREE.Color(Math.random(), Math.random(), Math.random()))
-            mesh.applyMatrix4(matrix)
-            boundingSphere.applyMatrix4(matrix)
-            // mesh.castShadow = false;
-            // mesh.receiveShadow = false;
-            //this.scene.add(mesh)
-            items.push(mesh)
-            var sphere = new THREEE.Mesh(
-                new THREEE.SphereBufferGeometry(boundingSphere.radius),
-                material
-            )
-            sphere.position.copy(boundingSphere.center)
+                mesh.geometry.computeBoundingSphere()
+                var boundingSphere = mesh.geometry.boundingSphere.clone()
+                spheres.push(boundingSphere)
+                let r = 500
+                let fai = 1 * 3.14 * Math.random()
+                let lamda = 2 * 3.14 * Math.random()
+                var matrix = new THREEE.Matrix4().set(
+                    2 * Math.random() - 1, 2 * Math.random() - 1, 2 * Math.random() - 1, r * Math.cos(lamda) * Math.sin(fai),
+                    2 * Math.random() - 1, 2 * Math.random() - 1, 2 * Math.random() - 1, r * Math.sin(lamda) * Math.sin(fai),
+                    2 * Math.random() - 1, 2 * Math.random() - 1, 2 * Math.random() - 1, r * Math.cos(fai),
+                    0, 0, 0, 1
+                )
+                instanceMesh.setMatrixAt(i, matrix)
+                instanceMesh.setColorAt(i, new THREE.Color(Math.random(), Math.random(), Math.random()))
+                mesh.applyMatrix4(matrix)
+                boundingSphere.applyMatrix4(matrix)
+                // mesh.castShadow = false;
+                // mesh.receiveShadow = false;
+                //this.scene.add(mesh)
+                items.push(mesh)
+                var sphere = new THREEE.Mesh(
+                    new THREEE.SphereBufferGeometry(boundingSphere.radius),
+                    material
+                )
+                sphere.position.copy(boundingSphere.center)
 
-            spheres.push(boundingSphere);
-            scene.add(mesh);
+                spheres.push(boundingSphere);
+                scene.add(mesh);
 
+            }
+            scene.add(instanceMesh)
         }
-        scene.add(instanceMesh)
-
 
 
         document.body.appendChild(webGLRenderer.domElement);
