@@ -42,7 +42,7 @@ function Car(params) {
                 item.castShadow = true;
             });
             car.position.z = -20;
-            car.position.y = -5;
+            car.position.y = -4;
 
             params.scene.add(car);
             self.car = car;
