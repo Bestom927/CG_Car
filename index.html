@@ -91,13 +91,18 @@
                 app.$data.gridData = res.data.data.slice(0, 8);
             }
         });
+        
+
         // 假设此时开始计时
         app.$data.startTimeStamp = new Date().getTime();
         // 假设此时停止计时
-        app.$data.endTimeStamp = new Date().getTime();
+        // app.$data.endTimeStamp = new Date().getTime();
         // 调用visible = true
         // app.$data.visible = true
 
+
+        // 主要场景
+        
         var scene = new THREE.Scene();  
 
         var camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -247,6 +252,7 @@
         });
 
         var car = new Car({
+            app:app,
             camera: camera,
             scene: scene,
             cb: start,
@@ -278,56 +284,56 @@
             // this.plane = plane;
             // scene.add(plane);
 
-            // 赛道自制
-            var mtlLoader = new THREE.MTLLoader();
-            mtlLoader.setPath('./assets/');
-            mtlLoader.load('brick.mtl', function (materials) {
-            materials.side= THREE.DoubleSide;
-            materials.preload();
-            var objLoader = new THREE.OBJLoader();
-            objLoader.setMaterials(materials);
-            objLoader.setPath('./assets/');
-            objLoader.load('brick.obj', function(object) {
-                object.children.forEach(function(item) {
-                    item.receiveShadow = true;
-                });
-                object.position.y = -5;
+        //     // 赛道自制
+        //     var mtlLoader = new THREE.MTLLoader();
+        //     mtlLoader.setPath('./assets/');
+        //     mtlLoader.load('brick.mtl', function (materials) {
+        //     materials.side= THREE.DoubleSide;
+        //     materials.preload();
+        //     var objLoader = new THREE.OBJLoader();
+        //     objLoader.setMaterials(materials);
+        //     objLoader.setPath('./assets/');
+        //     objLoader.load('brick.obj', function(object) {
+        //         object.children.forEach(function(item) {
+        //             item.receiveShadow = true;
+        //         });
+        //         object.position.y = -5;
 
                 
-                scene.add(object);
+        //         scene.add(object);
 
-            }, function() {
-                console.log('progress');
-            }, function() {
-                console.log('error');
+        //     }, function() {
+        //         console.log('progress');
+        //     }, function() {
+        //         console.log('error');
+        //     });
+        // });
+
+
+        // 丑地图
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('./assets/');
+        mtlLoader.load('ground.mtl', function (materials) {
+        materials.side= THREE.DoubleSide;
+        materials.preload();
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.setPath('./assets/');
+        objLoader.load('ground.obj', function(object) {
+            object.children.forEach(function(item) {
+                item.receiveShadow = true;
             });
+            object.position.y = -5;
+    
+    
+            scene.add(object);
+    
+        }, function() {
+            console.log('progress');
+        }, function() {
+            console.log('error');
         });
-
-
-    //     // 丑地图
-    //     var mtlLoader = new THREE.MTLLoader();
-    //     mtlLoader.setPath('./assets/');
-    //     mtlLoader.load('ground.mtl', function (materials) {
-    //     materials.side= THREE.DoubleSide;
-    //     materials.preload();
-    //     var objLoader = new THREE.OBJLoader();
-    //     objLoader.setMaterials(materials);
-    //     objLoader.setPath('./assets/');
-    //     objLoader.load('ground.obj', function(object) {
-    //         object.children.forEach(function(item) {
-    //             item.receiveShadow = true;
-    //         });
-    //         object.position.y = -5;
-    //
-    //
-    //         scene.add(object);
-    //
-    //     }, function() {
-    //         console.log('progress');
-    //     }, function() {
-    //         console.log('error');
-    //     });
-    // });
+    });
 
             
         }
