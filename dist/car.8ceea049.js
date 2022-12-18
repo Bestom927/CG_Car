@@ -138,12 +138,12 @@ function Car(params) {
   this.leftFront = {};
   this.leftBack = {};
   mtlLoader.setPath('./assets/');
-  mtlLoader.load('car4.mtl', function (materials) {
+  mtlLoader.load('ph.mtl', function (materials) {
     materials.preload();
     var objLoader = new THREE.OBJLoader();
     objLoader.setMaterials(materials);
     objLoader.setPath('./assets/');
-    objLoader.load('car4.obj', function (object) {
+    objLoader.load('auto.obj', function (object) {
       car = object;
       car.children.forEach(function (item) {
         item.castShadow = true;
@@ -163,6 +163,7 @@ function Car(params) {
     mtl: 'front_wheel.mtl',
     obj: 'front_wheel.obj',
     parent: car,
+    scene: params.scene,
     offsetX: 2.79475,
     offsetZ: -3.28386
   });
@@ -170,11 +171,12 @@ function Car(params) {
     mtl: 'front_wheel.mtl',
     obj: 'front_wheel.obj',
     parent: car,
+    scene: params.scene,
     offsetX: -2.79475,
     offsetZ: -3.28386
   });
 }
-Car.prototype.tick = function () {
+Car.prototype.tick = function (params) {
   if (this.lock > 0) {
     this.lock--;
     if (this.lock % 2) {
@@ -253,9 +255,9 @@ Car.prototype.tick = function () {
   this.frontLeftWheel.wrapper.position.x += speedX;
   this.frontRightWheel.wrapper.position.z += speedZ;
   this.frontRightWheel.wrapper.position.x += speedX;
-  camera.rotation.y = rotation;
-  camera.position.x = this.car.position.x + Math.sin(rotation) * 20;
-  camera.position.z = this.car.position.z + Math.cos(rotation) * 20;
+  params.camera.rotation.y = rotation;
+  params.camera.position.x = this.car.position.x + Math.sin(rotation) * 20;
+  params.camera.position.z = this.car.position.z + Math.cos(rotation) * 20;
 };
 Car.prototype.brake = function () {
   this.v = 10;
@@ -267,17 +269,19 @@ Car.prototype.cancelBrake = function () {
 };
 Car.prototype.physical = function () {
   var i = 0;
-  for (; i < outside.length; i += 4) {
-    if (isLineSegmentIntr(this.leftFront, this.leftBack, {
-      x: outside[i],
-      y: outside[i + 1]
-    }, {
-      x: outside[i + 2],
-      y: outside[i + 3]
-    })) {
-      return i;
-    }
-  }
+
+  // for (; i < outside.length; i += 4) {
+  //     if (isLineSegmentIntr(this.leftFront, this.leftBack, {
+  //         x: outside[i],
+  //         y: outside[i + 1]
+  //     }, {
+  //         x: outside[i + 2],
+  //         y: outside[i + 3]
+  //     })) {
+  //         return i;
+  //     }
+  // }
+
   return -1;
 };
 Car.prototype.reset = function () {
@@ -327,7 +331,7 @@ function Wheel(params) {
       wrapper.position.set(0, -5, -20);
       wrapper.add(object);
       object.position.set(params.offsetX, 0, params.offsetZ);
-      scene.add(wrapper);
+      params.scene.add(wrapper);
       self.wheel = object;
       self.wrapper = wrapper;
     }, function () {
@@ -409,7 +413,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61745" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64198" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
