@@ -291,41 +291,15 @@
             // scene.add(plane);
 
             // 赛道自制
-            //     var mtlLoader = new THREE.MTLLoader();
-            //     mtlLoader.setPath('./assets/');
-            //     mtlLoader.load('brick.mtl', function (materials) {
-            //     materials.side= THREE.DoubleSide;
-            //     materials.preload();
-            //     var objLoader = new THREE.OBJLoader();
-            //     objLoader.setMaterials(materials);
-            //     objLoader.setPath('./assets/');
-            //     objLoader.load('brick.obj', function(object) {
-            //         object.children.forEach(function(item) {
-            //             item.receiveShadow = true;
-            //         });
-            //         object.position.y = -5;
-
-
-            //         scene.add(object);
-
-            //     }, function() {
-            //         console.log('progress');
-            //     }, function() {
-            //         console.log('error');
-            //     });
-            // });
-
-
-            // 丑地图
             var mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('./assets/');
-            mtlLoader.load('ground.mtl', function (materials) {
+            mtlLoader.load('brick.mtl', function (materials) {
                 materials.side = THREE.DoubleSide;
                 materials.preload();
                 var objLoader = new THREE.OBJLoader();
                 objLoader.setMaterials(materials);
                 objLoader.setPath('./assets/');
-                objLoader.load('ground.obj', function (object) {
+                objLoader.load('brick.obj', function (object) {
                     object.children.forEach(function (item) {
                         item.receiveShadow = true;
                     });
@@ -340,6 +314,32 @@
                     console.log('error');
                 });
             });
+
+
+            // 丑地图
+            // var mtlLoader = new THREE.MTLLoader();
+            // mtlLoader.setPath('./assets/');
+            // mtlLoader.load('ground.mtl', function (materials) {
+            //     materials.side = THREE.DoubleSide;
+            //     materials.preload();
+            //     var objLoader = new THREE.OBJLoader();
+            //     objLoader.setMaterials(materials);
+            //     objLoader.setPath('./assets/');
+            //     objLoader.load('ground.obj', function (object) {
+            //         object.children.forEach(function (item) {
+            //             item.receiveShadow = true;
+            //         });
+            //         object.position.y = -5;
+
+
+            //         scene.add(object);
+
+            //     }, function () {
+            //         console.log('progress');
+            //     }, function () {
+            //         console.log('error');
+            //     });
+            // });
 
 
         }

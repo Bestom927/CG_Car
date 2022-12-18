@@ -11,7 +11,7 @@ function Car(params) {
     this.run = false;
     this.acceleration = 0.1;
     this.deceleration = 0.04;
-    this.maxSpeed = 5;
+    this.maxSpeed = 2;
     this.map;
 
     this.light = params.light;
@@ -160,10 +160,14 @@ Car.prototype.tick = function (params) {
     console.log("car pos(x, y, z): ");
     console.log(pos.x, pos.y, pos.z);
     console.log(this.map);
-    if (pos.x < 16 && pos.x > 13) {
+    if (this.map === 2 && pos.x < -5173 && pos.x > -5175) {
         // if (pos.x < -5171 && pos.x > -5175) {
-
+        // this.map === 2 && pos.x < 16 && pos.x > 13
         // window.alert("到达终点！")
+        // console.log(this.app)
+        // 假设此时停止计时
+        this.app.$data.endTimeStamp = new Date().getTime();
+        this.app.$data.visible = true;
         restartGame();
         return;
     }
@@ -173,10 +177,7 @@ Car.prototype.tick = function (params) {
     if (collisionSide > -1) {
         correctedSpeed = this.collision(speedX, speedZ, collisionSide);
 
-        // console.log(this.app)
-        // 假设此时停止计时
-        this.app.$data.endTimeStamp = new Date().getTime();
-        this.app.$data.visible = true;
+
 
         speedX = correctedSpeed.vx * 5;
         speedZ = correctedSpeed.vy * 5;
