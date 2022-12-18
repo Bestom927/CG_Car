@@ -8,7 +8,8 @@ function Car(params) {
     this.run = false;
     this.acceleration = 0.1;
     this.deceleration = 0.04;
-    this.maxSpeed = 2;
+    this.maxSpeed = 5;
+    this.map;
 
     this.light = params.light;
 
@@ -20,8 +21,10 @@ function Car(params) {
     this.addRotation = 0; // 累计的旋转角度
 
     this.leftFront = {};
-
     this.leftBack = {};
+
+    this.rightFront = {};
+    this.rightBack = {};
 
     mtlLoader.setPath('./assets/');
     mtlLoader.load('ph.mtl', function (materials) {
@@ -70,6 +73,7 @@ function Car(params) {
 }
 
 Car.prototype.tick = function (params) {
+    // 碰撞后的闪烁动画
     if (this.lock > 0) {
         this.lock--;
         if (this.lock % 2) {
@@ -130,6 +134,7 @@ Car.prototype.tick = function (params) {
     this.light.position.set(-10 + tempX, 20, tempZ);
     this.light.shadow.camera.updateProjectionMatrix();
 
+    // 动态获取汽车的左边
     var tempA = -(this.car.rotation.y + 0.523);
     this.leftFront.x = Math.sin(tempA) * 8 + tempX;
     this.leftFront.y = Math.cos(tempA) * 8 + tempZ;
@@ -137,6 +142,28 @@ Car.prototype.tick = function (params) {
     tempA = -(this.car.rotation.y + 2.616);
     this.leftBack.x = Math.sin(tempA) * 8 + tempX;
     this.leftBack.y = Math.cos(tempA) * 8 + tempZ;
+
+    // var tempB = -(this.car.rotation.z + 0.523);
+    // this.rightFront.x = Math.sin(tempB) * 8 + tempX;
+    // this.rightFront.y = Math.cos(tempB) * 8 + tempZ;
+
+    // tempB = -(this.car.rotation.z + 2.616);
+    // this.rightBack.x = Math.sin(tempB) * 8 + tempX;
+    // this.rightBack.y = Math.cos(tempB) * 8 + tempZ;
+
+    console.log(this.leftFront, this.leftBack);
+    console.log(this.rightFront, this.rightBack);
+    var pos = this.car.position;
+    console.log("car pos(x, y, z): ");
+    console.log(pos.x, pos.y, pos.z);
+    console.log(this.map);
+    if (pos.x < 16 && pos.x > 13) {
+        // if (pos.x < -5171 && pos.x > -5175) {
+
+        // window.alert("到达终点！")
+        restartGame();
+        return;
+    }
 
     var collisionSide = this.physical();
     var correctedSpeed;
@@ -192,17 +219,36 @@ Car.prototype.cancelBrake = function () {
 Car.prototype.physical = function () {
     var i = 0;
 
-    // for (; i < outside.length; i += 4) {
-    //     if (isLineSegmentIntr(this.leftFront, this.leftBack, {
-    //         x: outside[i],
-    //         y: outside[i + 1]
-    //     }, {
-    //         x: outside[i + 2],
-    //         y: outside[i + 3]
-    //     })) {
-    //         return i;
-    //     }
-    // }
+    if (this.map === 1) {
+        for (; i < outside1.length; i += 4) {
+            if (isLineSegmentIntersect(this.leftFront, this.leftBack, {
+                x: outside1[i],
+                y: outside1[i + 1]
+            }, {
+                x: outside1[i + 2],
+                y: outside1[i + 3]
+            })) {
+                console.log("physical");
+                console.log(i);
+                return i;
+            }
+        }
+    }
+    else if (this.map === 2) {
+        for (; i < outside2.length; i += 4) {
+            if (isLineSegmentIntersect(this.leftFront, this.leftBack, {
+                x: outside2[i],
+                y: outside2[i + 1]
+            }, {
+                x: outside2[i + 2],
+                y: outside2[i + 3]
+            })) {
+                console.log("physical");
+                console.log(i);
+                return i;
+            }
+        }
+    }
 
 
     return -1;
@@ -214,25 +260,46 @@ Car.prototype.reset = function () {
 
 Car.prototype.collision = function (sx, sz, side) {
     var pos = this.car.position;
-    var result = getBounceVector({
-        p0: {
-            x: pos.x,
-            y: pos.z
-        },
-        p1: {
-            x: pos.x + sx,
-            y: pos.z + sz
-        },
-        vx: sx,
-        vy: sz
-    }, {
-        p0: { x: outside[side], y: outside[side + 1] },
-        p1: { x: outside[side + 2], y: outside[side + 3] },
-        vx: outside[side + 2] - outside[side],
-        vy: outside[side + 3] - outside[side + 1]
-    });
-
-    return result;
+    if (this.map === 1) {
+        var result = getBounceVector({
+            p0: {
+                x: pos.x,
+                y: pos.z
+            },
+            p1: {
+                x: pos.x + sx,
+                y: pos.z + sz
+            },
+            vx: sx,
+            vy: sz
+        }, {
+            p0: { x: outside1[side], y: outside1[side + 1] },
+            p1: { x: outside1[side + 2], y: outside1[side + 3] },
+            vx: outside1[side + 2] - outside1[side],
+            vy: outside1[side + 3] - outside1[side + 1]
+        });
+        return result;
+    }
+    else if (this.map === 2) {
+        var result = getBounceVector({
+            p0: {
+                x: pos.x,
+                y: pos.z
+            },
+            p1: {
+                x: pos.x + sx,
+                y: pos.z + sz
+            },
+            vx: sx,
+            vy: sz
+        }, {
+            p0: { x: outside2[side], y: outside2[side + 1] },
+            p1: { x: outside2[side + 2], y: outside2[side + 3] },
+            vx: outside2[side + 2] - outside2[side],
+            vy: outside2[side + 3] - outside2[side + 1]
+        });
+        return result;
+    }
 };
 
 function Wheel(params) {
@@ -313,8 +380,11 @@ function getProjectVector(u, dx, dy) {
     };
 }
 
-function isLineSegmentIntr(a, b, c, d) {
-    // console.log(a, b);
+// 线和线的碰撞检测
+function isLineSegmentIntersect(a, b, c, d) {
+    console.log("a, b : ");
+    console.log(a);
+    console.log(b);
     var area_abc = (a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x);
 
     var area_abd = (a.x - d.x) * (b.y - d.y) - (a.y - d.y) * (b.x - d.x);
@@ -331,4 +401,9 @@ function isLineSegmentIntr(a, b, c, d) {
     }
 
     return true;
+}
+
+function restartGame(car) {
+    car.position.x = -4;
+    car.position.z = -15;
 }

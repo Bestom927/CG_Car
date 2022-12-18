@@ -1,6 +1,6 @@
-var scene = new THREE.Scene();  
+var scene = new THREE.Scene();
 
-var camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 camera.position.z = 0;
 camera.position.x = 0;
@@ -18,7 +18,7 @@ webGLRenderer.shadowMap.enabled = true;
 webGLRenderer.shadowMap.type = THREE.PCFShadowMap;
 
 
-var pointLight = new THREE.PointLight(0xccbbaa, 1, 0, 0);  
+var pointLight = new THREE.PointLight(0xccbbaa, 1, 0, 0);
 pointLight.position.set(-10, 20, -20);
 pointLight.castShadow = true;
 
@@ -40,8 +40,8 @@ dirLight.shadow.camera.bottom = -50;
 
 scene.add(dirLight);*/
 
-var light = new THREE.AmbientLight( 0xccbbaa, 0.1 );
-scene.add( light );
+var light = new THREE.AmbientLight(0xccbbaa, 0.1);
+scene.add(light);
 
 document.body.appendChild(webGLRenderer.domElement);
 
@@ -55,25 +55,25 @@ function Ground() {
     var objLoader = new THREE.OBJLoader();
 
     objLoader.setPath('./assets/');
-    objLoader.load('ground.obj', function(object) {
-        object.children.forEach(function(item) {
+    objLoader.load('ground.obj', function (object) {
+        object.children.forEach(function (item) {
             item.receiveShadow = true;
         });
         object.position.y = -5;
 
-        
+
         scene.add(object);
 
-    }, function() {
+    }, function () {
         console.log('progress');
-    }, function() {
+    }, function () {
         console.log('error');
     });
 }
 
-document.body.addEventListener('keydown', function(e) {
+document.body.addEventListener('keydown', function (e) {
     // console.log(e.keyCode);
-    switch(e.keyCode) {
+    switch (e.keyCode) {
         case 87: // w
             car.run = true;
             break;
@@ -89,8 +89,8 @@ document.body.addEventListener('keydown', function(e) {
     }
 });
 
-document.body.addEventListener('keyup', function(e) {
-    switch(e.keyCode) {
+document.body.addEventListener('keyup', function (e) {
+    switch (e.keyCode) {
         case 87: // w
             car.run = false;
             break;
@@ -122,7 +122,7 @@ function start() {
     render();
 }
 
-function render() {  
+function render() {
     car.tick();
 
     requestAnimationFrame(render);
