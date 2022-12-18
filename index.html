@@ -23,11 +23,11 @@
                 <el-table-column property="completionTime" label="用时(s)" width="100"></el-table-column>
             </el-table>
             <span style=" margin-left: 1vh">
-                <b style="font-size: large">你的用时: {{completionTime}}s</b>
+                <b style="font-size: large">你的用时: {{((this.endTimeStamp - this.startTimeStamp) / 1000).toFixed(1)}}s</b>
             </span>
             <el-form :model="form" style= "margin-left: 1vh" >
-                <p>请输入昵称</p>
-                <el-input v-model="form.name" autocomplete="off"></el-input>
+                <p>昵称</p>
+                <el-input v-model="form.name" autocomplete="off" placeholder="请输入昵称"></el-input>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="visible = false">取 消</el-button>
@@ -55,19 +55,21 @@
                     visible: false,
                     gridData: [],
                     form: {
-                        name: '匿名用户',
+                        name: '',
                     },
                     formLabelWidth: '120px',
-                    completionTime: 11.2
+                    startTimeStamp: 0,
+                    endTimeStamp: 0,
                 }
             },
             methods:{
                 submitGrade(){
+                    var completionTime = ((this.endTimeStamp - this.startTimeStamp) / 1000).toFixed(1);
                     this.visible = false;
                     if(this.form.name.trim() === ''){
                         this.form.name = '匿名用户';
                     }
-                    addRecord(this.form.name,this.completionTime).then(res=>{
+                    addRecord(this.form.name,completionTime).then(res=>{
                         if(res===true){
                             this.$message({
                                 message: '提交成功',
@@ -85,10 +87,16 @@
         })
         // 初始化数据
         getRankList().then(res=>{
-            app.$data.gridData = res.data.data.slice(0,8);
-            app.$data.visible = true
+            if(res.data.data!=null) {
+                app.$data.gridData = res.data.data.slice(0, 8);
+            }
         });
-
+        // 假设此时开始计时
+        app.$data.startTimeStamp = new Date().getTime();
+        // 假设此时停止计时
+        app.$data.endTimeStamp = new Date().getTime();
+        // 调用visible = true
+        // app.$data.visible = true
 
         var scene = new THREE.Scene();  
 
@@ -271,55 +279,55 @@
             // scene.add(plane);
 
             // 赛道自制
-        //     var mtlLoader = new THREE.MTLLoader();
-        //     mtlLoader.setPath('./assets/');
-        //     mtlLoader.load('brick.mtl', function (materials) {
-        //     materials.side= THREE.DoubleSide;
-        //     materials.preload();
-        //     var objLoader = new THREE.OBJLoader();
-        //     objLoader.setMaterials(materials);
-        //     objLoader.setPath('./assets/');
-        //     objLoader.load('brick.obj', function(object) {
-        //         object.children.forEach(function(item) {
-        //             item.receiveShadow = true;
-        //         });
-        //         object.position.y = -5;
+            var mtlLoader = new THREE.MTLLoader();
+            mtlLoader.setPath('./assets/');
+            mtlLoader.load('brick.mtl', function (materials) {
+            materials.side= THREE.DoubleSide;
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.setPath('./assets/');
+            objLoader.load('brick.obj', function(object) {
+                object.children.forEach(function(item) {
+                    item.receiveShadow = true;
+                });
+                object.position.y = -5;
 
                 
-        //         scene.add(object);
+                scene.add(object);
 
-        //     }, function() {
-        //         console.log('progress');
-        //     }, function() {
-        //         console.log('error');
-        //     });
-        // });
-
-
-        // 丑地图
-        var mtlLoader = new THREE.MTLLoader();
-        mtlLoader.setPath('./assets/');
-        mtlLoader.load('ground.mtl', function (materials) {
-        materials.side= THREE.DoubleSide;
-        materials.preload();
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
-        objLoader.setPath('./assets/');
-        objLoader.load('ground.obj', function(object) {
-            object.children.forEach(function(item) {
-                item.receiveShadow = true;
+            }, function() {
+                console.log('progress');
+            }, function() {
+                console.log('error');
             });
-            object.position.y = -5;
-
-            
-            scene.add(object);
-
-        }, function() {
-            console.log('progress');
-        }, function() {
-            console.log('error');
         });
-    });
+
+
+    //     // 丑地图
+    //     var mtlLoader = new THREE.MTLLoader();
+    //     mtlLoader.setPath('./assets/');
+    //     mtlLoader.load('ground.mtl', function (materials) {
+    //     materials.side= THREE.DoubleSide;
+    //     materials.preload();
+    //     var objLoader = new THREE.OBJLoader();
+    //     objLoader.setMaterials(materials);
+    //     objLoader.setPath('./assets/');
+    //     objLoader.load('ground.obj', function(object) {
+    //         object.children.forEach(function(item) {
+    //             item.receiveShadow = true;
+    //         });
+    //         object.position.y = -5;
+    //
+    //
+    //         scene.add(object);
+    //
+    //     }, function() {
+    //         console.log('progress');
+    //     }, function() {
+    //         console.log('error');
+    //     });
+    // });
 
             
         }
