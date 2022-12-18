@@ -160,11 +160,18 @@ Car.prototype.tick = function (params) {
     console.log("car pos(x, y, z): ");
     console.log(pos.x, pos.y, pos.z);
     console.log(this.map);
-    if (this.map === 2 && pos.x < -5173 && pos.x > -5175) {
+    // end
+    if (this.map === 2 && pos.x < -5163 && pos.x > -5165) {
         // if (pos.x < -5171 && pos.x > -5175) {
         // this.map === 2 && pos.x < 16 && pos.x > 13
         // window.alert("到达终点！")
         // console.log(this.app)
+        // 假设此时停止计时
+        this.app.$data.endTimeStamp = new Date().getTime();
+        this.app.$data.visible = true;
+        restartGame();
+        return;
+    } else if (this.map === 1 && pos.x < -5163 && pos.x > -5165) {
         // 假设此时停止计时
         this.app.$data.endTimeStamp = new Date().getTime();
         this.app.$data.visible = true;
@@ -241,6 +248,7 @@ Car.prototype.physical = function () {
                 console.log(i);
                 return i;
             }
+            console.log(this.leftFront, this.leftBack);
         }
     }
     else if (this.map === 2) {
@@ -391,9 +399,9 @@ function getProjectVector(u, dx, dy) {
 
 // 线和线的碰撞检测
 function isLineSegmentIntersect(a, b, c, d) {
-    console.log("a, b : ");
-    console.log(a);
-    console.log(b);
+    // console.log("a, b : ");
+    // console.log(a);
+    // console.log(b);
     var area_abc = (a.x - c.x) * (b.y - c.y) - (a.y - c.y) * (b.x - c.x);
 
     var area_abd = (a.x - d.x) * (b.y - d.y) - (a.y - d.y) * (b.x - d.x);
