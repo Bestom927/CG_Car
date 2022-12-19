@@ -56,23 +56,7 @@ function Car(params) {
         });
     });
 
-    self.frontRightWheel = new Wheel({
-        mtl: 'front_wheel.mtl',
-        obj: 'front_wheel.obj',
-        parent: car,
-        scene: params.scene,
-        offsetX: 2.79475,
-        offsetZ: -3.28386
-    });
 
-    self.frontLeftWheel = new Wheel({
-        mtl: 'front_wheel.mtl',
-        obj: 'front_wheel.obj',
-        parent: car,
-        scene: params.scene,
-        offsetX: -2.79475,
-        offsetZ: -3.28386
-    });
 }
 
 Car.prototype.tick = function (params) {
@@ -154,12 +138,12 @@ Car.prototype.tick = function (params) {
     // this.rightBack.x = Math.sin(tempB) * 8 + tempX;
     // this.rightBack.y = Math.cos(tempB) * 8 + tempZ;
 
-    console.log(this.leftFront, this.leftBack);
-    console.log(this.rightFront, this.rightBack);
+    // console.log(this.leftFront, this.leftBack);
+    // console.log(this.rightFront, this.rightBack);
     var pos = this.car.position;
-    console.log("car pos(x, y, z): ");
-    console.log(pos.x, pos.y, pos.z);
-    console.log(this.map);
+    // console.log("car pos(x, y, z): ");
+    // console.log(pos.x, pos.y, pos.z);
+    // console.log(this.map);
     // end
     if (this.map === 2 && pos.x < -5163 && pos.x > -5165) {
         // if (pos.x < -5171 && pos.x > -5175) {
@@ -200,19 +184,10 @@ Car.prototype.tick = function (params) {
 
 
     this.car.rotation.y = this.realRotation;
-    this.frontLeftWheel.wrapper.rotation.y = this.realRotation;
-    this.frontRightWheel.wrapper.rotation.y = this.realRotation;
-    this.frontLeftWheel.wheel.rotation.y = (this.dirRotation - this.realRotation) / 2;
-    this.frontRightWheel.wheel.rotation.y = (this.dirRotation - this.realRotation) / 2;
 
 
     this.car.position.z += speedZ;
     this.car.position.x += speedX;
-
-    this.frontLeftWheel.wrapper.position.z += speedZ;
-    this.frontLeftWheel.wrapper.position.x += speedX;
-    this.frontRightWheel.wrapper.position.z += speedZ;
-    this.frontRightWheel.wrapper.position.x += speedX;
 
 
     params.camera.rotation.y = rotation;
@@ -244,11 +219,11 @@ Car.prototype.physical = function () {
                 x: outside1[i + 2],
                 y: outside1[i + 3]
             })) {
-                console.log("physical");
-                console.log(i);
+                // console.log("physical");
+                // console.log(i);
                 return i;
             }
-            console.log(this.leftFront, this.leftBack);
+            // console.log(this.leftFront, this.leftBack);
         }
     }
     else if (this.map === 2) {
@@ -260,8 +235,8 @@ Car.prototype.physical = function () {
                 x: outside2[i + 2],
                 y: outside2[i + 3]
             })) {
-                console.log("physical");
-                console.log(i);
+                // console.log("physical");
+                // console.log(i);
                 return i;
             }
         }
@@ -319,40 +294,6 @@ Car.prototype.collision = function (sx, sz, side) {
     }
 };
 
-function Wheel(params) {
-    var mtlLoader = new THREE.MTLLoader();
-    var self = this;
-
-    mtlLoader.setPath('./assets/');
-    mtlLoader.load(params.mtl, function (materials) {
-
-        materials.preload();
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
-        objLoader.setPath('./assets/');
-        objLoader.load(params.obj, function (object) {
-
-            object.children.forEach(function (item) {
-                item.castShadow = true;
-            });
-            var wrapper = new THREE.Object3D();
-            wrapper.position.set(0, -5, -20);
-            wrapper.add(object);
-
-            object.position.set(params.offsetX, 0, params.offsetZ);
-
-            params.scene.add(wrapper);
-            self.wheel = object;
-            self.wrapper = wrapper;
-
-        }, function () {
-            console.log('progress');
-        }, function () {
-            console.log('error');
-        });
-    });
-
-}
 
 function isLeft(a, b, c) {
     return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x) < 0;
