@@ -2,10 +2,10 @@
 
 ## how to run this project
 
-# npm install anywhere
+### npm install anywhere
 
 ## THEN
 
-# anywhere
+### anywhere
 
 We have our backend to store the information. You can use W, A, D and space to play this game.
