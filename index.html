@@ -260,6 +260,58 @@
             }
         });
 
+        window.addEventListener("gamepadconnected", function(e) {
+        console.log("控制器已连接于 %d 位：%s. %d 个按钮，%d 个坐标方向。",
+            e.gamepad.index, e.gamepad.id,
+            e.gamepad.buttons.length, e.gamepad.axes.length);
+            // while (true) {
+            //     readGamepad();
+            // }
+            
+        });
+        // 写一个函数，读取gamepad的状态，然后根据状态来控制小车
+        function readGamepad() {
+            var gamepad = navigator.getGamepads()[1];
+            // console.log(gamepad);
+            // console.log("out fuck");
+            if (gamepad) {
+                // 根据按键前进后退左右
+                if(gamepad.buttons[0].pressed){
+                    car.run=true;
+                }
+                if(gamepad.buttons[7].pressed){
+                    car.rSpeed = 0.02;
+                }
+                if(gamepad.buttons[8].pressed){
+                    car.rSpeed = -0.02;
+                }
+                if(gamepad.buttons[10].pressed){
+                    car.brake();
+                }
+                
+                // console.log(gamepad.axes[0], gamepad.axes[1]);
+                // console.log(gamepad.buttons[0].pressed);
+                // console.log(gamepad.buttons[1].pressed);
+                // console.log(gamepad.buttons[2].pressed);
+                // console.log(gamepad.buttons[3].pressed);
+                // console.log(gamepad.buttons[4].pressed)
+                if(!gamepad.buttons[0].pressed){
+                    car.run=false;
+                }
+                if(!gamepad.buttons[7].pressed){
+                    car.rSpeed = 0;
+                }
+                if(!gamepad.buttons[8].pressed){
+                    car.rSpeed = 0;
+                }
+                if(!gamepad.buttons[10].pressed){
+                    car.cancelBrake();
+                }
+            }
+        }
+        
+        
+
         var car = new Car({
             app: app,
             camera: camera,
@@ -296,45 +348,17 @@
             // this.plane = plane;
             // scene.add(plane);
 
-            // // 赛道自制
-            // car.map = 2;
-            // var mtlLoader = new THREE.MTLLoader();
-            // mtlLoader.setPath('./assets/');
-            // mtlLoader.load('brick.mtl', function (materials) {
-            //     materials.side = THREE.DoubleSide;
-            //     materials.preload();
-            //     var objLoader = new THREE.OBJLoader();
-            //     objLoader.setMaterials(materials);
-            //     objLoader.setPath('./assets/');
-            //     objLoader.load('brick.obj', function (object) {
-            //         object.children.forEach(function (item) {
-            //             item.receiveShadow = true;
-            //         });
-            //         object.position.y = -5;
-
-
-            //         scene.add(object);
-
-            //     }, function () {
-            //         console.log('progress');
-            //     }, function () {
-            //         console.log('error');
-            //     });
-            // });
-
-
-            // 丑地图
-            car.map = 1;
-            car.maxSpeed=1;
+            // 赛道自制
+            car.map = 2;
             var mtlLoader = new THREE.MTLLoader();
             mtlLoader.setPath('./assets/');
-            mtlLoader.load('ground.mtl', function (materials) {
+            mtlLoader.load('brick.mtl', function (materials) {
                 materials.side = THREE.DoubleSide;
                 materials.preload();
                 var objLoader = new THREE.OBJLoader();
                 objLoader.setMaterials(materials);
                 objLoader.setPath('./assets/');
-                objLoader.load('ground.obj', function (object) {
+                objLoader.load('brick.obj', function (object) {
                     object.children.forEach(function (item) {
                         item.receiveShadow = true;
                     });
@@ -349,6 +373,34 @@
                     console.log('error');
                 });
             });
+
+
+            // // 丑地图
+            // car.map = 1;
+            // car.maxSpeed=1;
+            // var mtlLoader = new THREE.MTLLoader();
+            // mtlLoader.setPath('./assets/');
+            // mtlLoader.load('ground2.mtl', function (materials) {
+            //     materials.side = THREE.DoubleSide;
+            //     materials.preload();
+            //     var objLoader = new THREE.OBJLoader();
+            //     objLoader.setMaterials(materials);
+            //     objLoader.setPath('./assets/');
+            //     objLoader.load('ground2.obj', function (object) {
+            //         object.children.forEach(function (item) {
+            //             item.receiveShadow = true;
+            //         });
+            //         object.position.y = -5;
+
+
+            //         scene.add(object);
+
+            //     }, function () {
+            //         console.log('progress');
+            //     }, function () {
+            //         console.log('error');
+            //     });
+            // });
 
 
         }

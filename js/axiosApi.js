@@ -3,7 +3,7 @@ async function getRankList(){
     var rank_list;
     await axios({
         method: 'get',
-        url: 'http://106.54.160.145:8081/rank',
+        url: 'http://124.222.31.116:8081/rank',
     }).then(res=>{
         rank_list = res;
     }).catch(errMsg=>{
@@ -22,7 +22,7 @@ async function addRecord(userName,completionTime){
     var date_str = year.toString() +'/'+ month.toString()+'/' + day.toString()+' ' + hour.toString() +':'+ minute.toString();
 
     var is_succeed
-    await axios.post('http://106.54.160.145:8081/rank', {
+    await axios.post('http://124.222.31.116:8081/rank', {
         userName: userName,
         completionTime:completionTime,
         recordTime:date_str

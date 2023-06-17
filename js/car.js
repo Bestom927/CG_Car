@@ -36,7 +36,7 @@ function Car(params) {
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
         objLoader.setPath('./assets/');
-        objLoader.load('auto.obj', function (object) {
+        objLoader.load('motor.obj', function (object) {
             car = object;
             car.children.forEach(function (item) {
                 item.castShadow = true;
